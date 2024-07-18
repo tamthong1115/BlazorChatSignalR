@@ -1,0 +1,12 @@
+﻿services:
+  blazorchatsignalr:
+    image: blazorchatsignalr
+    build:
+      context: .
+      dockerfile: BlazorChatSignalR/BlazorChatSignalR/Dockerfile
+
+  blazorchatsignalr.client:
+    image: blazorchatsignalr.client
+    build:
+      context: .
+      dockerfile: BlazorChatSignalR/BlazorChatSignalR.Client/Dockerfile

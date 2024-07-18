@@ -1,0 +1,91 @@
+@page "/chat"
+@* This is used to dispose the component when it is no longer needed *@
+@using BlazorChatSignalR.Client.ChatServices
+@using ChatModels
+@using Microsoft.AspNetCore.SignalR.Client
+@inject ChatService ChatService
+@inject NavigationManager NavigationManager
+@rendermode InteractiveAuto
+
+
+<PageTitle>HubChat</PageTitle>
+
+<h1 class="text-4xl font-extrabold">Test</h1>
+<div class="row-auto">
+    <div class="columns-5xl">
+        <div class="card">
+            <div class="font-bold text-2xl">Hub Chat</div>
+            <div class="card-body">
+                <ul class="list-group ">
+                    @foreach (var chat in Chats)
+                    {
+                        <li class="list-disc">
+                            @chat.TimeStamp.Date.ToString("dd/MMM/yy")
+                            <br/>
+                            <span class="font-bold">@chat.UserName:</span>
+                            <br/>
+                            @chat.Message
+                        </li>
+                    }
+                </ul>
+
+                <div class="mt-3">
+                    <EditForm Model="_chat" OnValidSubmit="SendChat">
+                        <DataAnnotationsValidator/>
+                        <div class="vstack gap-1">
+                            <InputText @bind-Value="_chat.UserName" class="form-control w-25" placeholder="Username"/>
+                            <InputText @bind-Value="_chat.Message" class="form-control w-25" placeholder="Message"/>
+                        </div>
+
+                        <button class="float-end btn btn-success mt-3" type="submit">Send message</button>
+                    </EditForm>
+                </div>
+            </div>
+
+            <div class="card-footer fw-bold">
+                @if (!IsConnected)
+                {
+                    <button class="btn btn-primary">Chat Disconnected</button>
+                }
+                else
+                {
+                    <div>
+                        Connected
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private Chat _chat = new();
+    private HubConnection? _hubConnection;
+    public List<Chat> Chats { get; set; } = new List<Chat>();
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        _hubConnection = new HubConnectionBuilder().WithUrl(NavigationManager.ToAbsoluteUri("/chathub")).Build();
+
+        _hubConnection.On<Chat>("ReceiveMessage", (chat) =>
+        {
+            Chats.Add(chat);
+            InvokeAsync(() => StateHasChanged());
+        });
+
+        await _hubConnection.StartAsync();
+        var httpClient = new HttpClient();
+        var chatApiUrl = NavigationManager.ToAbsoluteUri("/api/Chat");
+        Chats = await httpClient.GetFromJsonAsync<List<Chat>>(chatApiUrl);
+    }
+
+    public bool IsConnected => _hubConnection.State == HubConnectionState.Connected;
+
+    public void SendChat()
+    {
+        _hubConnection!.SendAsync("SendMessage", _chat);
+        _chat.Message = null;
+    }
+
+}
