@@ -1,0 +1,75 @@
+﻿@page "/"
+@rendermode RenderMode.InteractiveServer
+
+<PageTitle>ListChat</PageTitle>
+<div class="container">
+	<div class="list-group">
+		<div class="search-chatroom">
+			<input class="input-field" type="text" placeholder="type something" />
+			<button class="button">
+				<img class="icon" src="icon/search.svg" />
+			</button>
+		</div>
+
+		<div class="card">
+			<div class="chatroom">
+				<div class="account-name">Blazor Chat App</div>
+				<div class="last-session">
+					<div class="time">
+						@lastTime
+					</div>
+					<div class="content-message">Welcome to me, Let's go'</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="card card-effect">
+			<NavLink class="chatroom" href="">
+				<div class="account-name">@nameAccount</div>
+				<div class="last-session">
+					<div class="time">
+						@lastTime
+					</div>
+					<div class="content-message">@lastMessage</div>
+				</div>
+			</NavLink>
+		</div>
+		<div class="card card-effect">
+			<NavLink class="chatroom" href="">
+				<div class="account-name">@nameAccount</div>
+				<div class="last-session">
+					<div class="time">
+						@lastTime
+					</div>
+					<div class="content-message">@lastMessage</div>
+				</div>
+			</NavLink>
+		</div>
+		<div class="card card-effect">
+			<NavLink class="chatroom" href="">
+				<div class="account-name">@nameAccount</div>
+				<div class="last-session">
+					<div class="time">
+						@lastTime
+					</div>
+					<div class="content-message">@lastMessage</div>
+				</div>
+			</NavLink>
+		</div>
+	</div>
+
+	<div class="form-group">
+		<div class="chat-area"></div>
+		<div class="chat-sender">
+			<form class="sender">
+				<input class="input-field" type="text" placeholder="write now..." />
+				<button class="button">
+					<img class="icon" src="icon/send-fill.svg" />
+				</button>
+			</form>
+		</div>
+	</div>
+</div>
+
+
+
