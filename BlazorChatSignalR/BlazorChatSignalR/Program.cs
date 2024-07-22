@@ -40,7 +40,9 @@ builder.Services.AddAuthentication(o =>
 })
     .AddIdentityCookies();
 
+
 builder.Services.AddCascadingAuthenticationState();
+
 builder.Services.AddScoped<AuthenticationStateProvider, PersistingServerAuthenticationStateProvide>();
 
 
