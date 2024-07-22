@@ -1,0 +1,71 @@
+﻿@page "/auth/register"
+@layout AuthLayout
+@using BlazorChatSignalR.Components.Layout
+@using ChatModels.Models
+
+@inject NavigationManager navigationManager
+<div class="container">
+<div class="row">
+	<div class="col-12">
+		<h2 class="text">Create a new account</h2>
+		<EditForm Model="model" OnValidSubmit="RegisterUser">
+			<RadzenCard>
+				<AlertMessage Message="@message" MessageType="@messageType" />
+				@if(!string.IsNullOrWhiteSpace(message))
+				{
+					<div class="alert alert-info">@message</div>
+				}
+				<DataAnnotationsValidator />
+				<ValidationSummary />
+				<div class="form-group">
+				<label>First Name</label>
+					<RadzenTextBox id="firstName" class="form-control" @bind-Value="model.FirstName"></RadzenTextBox>
+				</div>
+				<div class="form-group">
+				<label>Last Name</label>
+					<RadzenTextBox id="lastName" class="form-control" @bind-Value="model.LastName"></RadzenTextBox>
+				</div>
+
+				<div class="form-group">
+				<label>Email</label>
+					<RadzenTextBox id="email" class="form-control" @bind-Value="model.Email"></RadzenTextBox>
+				</div>
+				<div class="form-group">
+				<label>Password</label>
+					<RadzenPassword id="password" class="form-control" @bind-Value="model.Password"></RadzenPassword>
+				</div>
+				<div class="form-group">
+				<label>ConfirmPassword</label>
+					<RadzenPassword id="confirmPassword" class="form-control" @bind-Value="model.ConfirmPassword"></RadzenPassword>
+				</div>
+				<hr />
+				<div class="form-group">
+				<RadzenButton ButtonType="Radzen.ButtonType.Submit" Text="Register"
+							  ButtonStyle="Radzen.ButtonStyle.Primary" class="btn-block mr-2" 
+							  Disabled ="isBusy"/>
+
+				<RadzenButton ButtonType="Radzen.ButtonType.Button" Text="Login"
+							  ButtonStyle="Radzen.ButtonStyle.Secondary" class="btn-block mr-2"
+								  Disabled="isBusy" Click="GoToLogin" />
+				</div>
+			</RadzenCard>
+		</EditForm>
+	</div>
+</div>
+</div>
+@code {
+	RegisterRequest model = new RegisterRequest();
+	bool isBusy = false;
+	string message = string.Empty;
+	Models.AlertMessageType messageType = Models.AlertMessageType.Success;
+	public async Task RegisterUser()
+	{
+
+	}
+
+	void GoToLogin()
+	{
+		navigationManager.NavigateTo("/auth/login");
+	}
+
+}

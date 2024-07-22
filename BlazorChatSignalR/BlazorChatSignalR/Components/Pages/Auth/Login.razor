@@ -1,0 +1,56 @@
+﻿@page "/auth/login"
+@layout AuthLayout
+@using BlazorChatSignalR.Components.Layout
+@using ChatModels.Models
+
+@inject NavigationManager navigationManager
+
+<div class="row">
+	<div class="col-12">
+		<h2 class="text">Login to your account</h2>
+		<EditForm Model="model" OnValidSubmit="LoginUser">
+			<RadzenCard>
+				<AlertMessage Message="@message" MessageType="@messageType" />
+				<DataAnnotationsValidator />
+				<ValidationSummary />
+				
+
+				<div class="form-group">
+					<label>Email</label>
+					<RadzenTextBox id="email" class="form-control" @bind-Value="model.Email"></RadzenTextBox>
+				</div>
+				<div class="form-group">
+					<label>Password</label>
+					<RadzenPassword id="password" class="form-control" @bind-Value="model.Password"></RadzenPassword>
+				</div>
+				
+				<hr />
+				<div class="form-group">
+					<RadzenButton ButtonType="Radzen.ButtonType.Submit" Text="Login"
+								  ButtonStyle="Radzen.ButtonStyle.Primary" class="btn-block mr-2"
+								  Disabled="isBusy" />
+
+					<RadzenButton ButtonType="Radzen.ButtonType.Button" Text="Register"
+								  ButtonStyle="Radzen.ButtonStyle.Secondary" class="btn-block mr-2"
+								  Disabled="isBusy" Click="GoToRegister" />
+				</div>
+			</RadzenCard>
+		</EditForm>
+	</div>
+</div>
+
+@code {
+	LoginRequest model = new LoginRequest();
+	bool isBusy = false;
+	string message = string.Empty;
+	Models.AlertMessageType messageType = Models.AlertMessageType.Success;
+	public async Task LoginUser()
+	{
+
+	}
+	void GoToRegister()
+	{
+		navigationManager.NavigateTo("/auth/register");
+	}
+
+}
