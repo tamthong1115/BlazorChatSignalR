@@ -40,7 +40,9 @@ builder.Services.AddAuthentication(o =>
 })
     .AddIdentityCookies();
 
+
 builder.Services.AddCascadingAuthenticationState();
+
 builder.Services.AddScoped<AuthenticationStateProvider, PersistingServerAuthenticationStateProvide>();
 
 
@@ -73,4 +75,7 @@ app.MapRazorComponents<App>()
 // Add the ChatHub to the request pipeline.
 app.MapControllers();
 app.MapHub<ChatHub>("/chathub");
+
+// This for the Identity (authentication) service
+app.MapAdditionalIdentityEndpoints();
 app.Run();
