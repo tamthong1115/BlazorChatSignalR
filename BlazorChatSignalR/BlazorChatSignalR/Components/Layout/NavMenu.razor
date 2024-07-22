@@ -1,19 +1,27 @@
-﻿<div class="top-row ps-3 navbar navbar-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="">BlazorChatSignalR</a>
-    </div>
-</div>
-
-<input type="checkbox" title="Navigation menu" class="navbar-toggler"/>
-
-<div class="nav-scrollable" onclick="document.querySelector('.navbar-toggler').click()">
-    <nav class="flex-column">
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="/chat" Match="NavLinkMatch.All">
-                <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Chat
-            </NavLink>
-        </div>
-
-
-    </nav>
+﻿<div class="container-navbar">
+	<div class="info-group">
+		<div class="title">BlazorChatApp SignalR</div>
+		<a class="account" href="#">
+			<img class="info-control thumbnail" src="sources/self.png" />
+			<div class="info-control account-name">CaO NhAt HaO</div>
+		</a>
+	</div>
+	<div class="navigation">
+		<div class="item">
+			<NavLink class="item-link" href="" Match="NavLinkMatch.All">
+				<span>
+					<img class="icon" src="icon/list.svg" />
+					List
+				</span>
+			</NavLink>
+		</div>
+		<div class="item">
+			<NavLink class="item-link" href="Weather">
+				<span>
+					<img class="icon" src="/icon/collection.svg" />
+					Groups
+				</span>
+			</NavLink>
+		</div>
+	</div>
 </div>
