@@ -9,3 +9,11 @@
 @using BlazorChatSignalR
 @using BlazorChatSignalR.Client
 @using BlazorChatSignalR.Components
+
+@using System.ComponentModel.DataAnnotations
+@using BlazorChatSignalR.Authentication
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<AppUser> userManager
+@inject SignInManager<AppUser> signInManager
+@inject NavigationManager NavManager
+@using System.Linq

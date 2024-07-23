@@ -17,8 +17,8 @@
         </PackageReference>
         <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.3" />
         <ProjectReference Include="..\..\ChatModels\ChatModels.csproj" />
-        <ProjectReference Include="..\BlazorChatSignalR.Client\BlazorChatSignalR.Client.csproj"/>
-        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="8.0.5"/>
+        <ProjectReference Include="..\BlazorChatSignalR.Client\BlazorChatSignalR.Client.csproj" />
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="8.0.5" />
     </ItemGroup>
 
     <ItemGroup>
@@ -34,6 +34,7 @@
 
     <ItemGroup>
       <Folder Include="Controllers\" />
+      <Folder Include="wwwroot\font\" />
     </ItemGroup>
 
 </Project>

@@ -1,7 +1,19 @@
-﻿@page "/"
+﻿@page "/home"
+@using System.Linq
+@using System.Security.Claims
+
 
 <PageTitle>Home</PageTitle>
 
-<h1 class="font-extrabold text-4xl">Hello, world!</h1>
+<h1>Hello, world</h1>
 
+<Microsoft.AspNetCore.Components.Authorization.AuthorizeView>
+
+        <div class="card-header">
+            Welcome
+            [@context.User.Claims.Where(f => f.Type == ClaimTypes.Name).Last().Value],
+            You can now join the chat...
+        </div>
+  
+ </Microsoft.AspNetCore.Components.Authorization.AuthorizeView>
 Welcome to your new app.

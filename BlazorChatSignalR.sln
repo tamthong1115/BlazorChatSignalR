@@ -1,15 +1,18 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorChatSignalR", "BlazorChatSignalR\BlazorChatSignalR\BlazorChatSignalR.csproj", "{CED2033D-C227-4E75-9380-AAFB522A235F}"
+# Visual Studio Version 17
+VisualStudioVersion = 17.10.35027.167
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorChatSignalR", "BlazorChatSignalR\BlazorChatSignalR\BlazorChatSignalR.csproj", "{CED2033D-C227-4E75-9380-AAFB522A235F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorChatSignalR.Client", "BlazorChatSignalR\BlazorChatSignalR.Client\BlazorChatSignalR.Client.csproj", "{7A9C7DFA-477D-455E-9109-2AF1F6A66C11}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorChatSignalR.Client", "BlazorChatSignalR\BlazorChatSignalR.Client\BlazorChatSignalR.Client.csproj", "{7A9C7DFA-477D-455E-9109-2AF1F6A66C11}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{4C7CC513-4BFB-4FCC-B499-ABA399F5669C}"
 	ProjectSection(SolutionItems) = preProject
 		docker-compose.yml = docker-compose.yml
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatModels", "ChatModels\ChatModels.csproj", "{01FFCACA-C372-49A3-AED0-82DC1D3FE0D7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChatModels", "ChatModels\ChatModels.csproj", "{01FFCACA-C372-49A3-AED0-82DC1D3FE0D7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -30,6 +33,10 @@ Global
 		{01FFCACA-C372-49A3-AED0-82DC1D3FE0D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{01FFCACA-C372-49A3-AED0-82DC1D3FE0D7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {23FC8B99-4E0E-48A8-8468-848D64CD84DD}
 	EndGlobalSection
 EndGlobal

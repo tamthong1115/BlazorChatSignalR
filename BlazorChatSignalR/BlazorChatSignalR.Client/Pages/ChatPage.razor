@@ -1,22 +1,28 @@
 @page "/chat"
 @* This is used to dispose the component when it is no longer needed *@
-@using BlazorChatSignalR.Client.ChatServices
 @using ChatModels
+@using BlazorChatSignalR.Client.ChatServices
 @using Microsoft.AspNetCore.SignalR.Client
-@inject ChatService ChatService
+@using System.Security.Claims
+@rendermode InteractiveWebAssembly
 @inject NavigationManager NavigationManager
-@rendermode InteractiveAuto
-
-
+@inject HttpClient httpClient
 <PageTitle>HubChat</PageTitle>
-
-<h1 class="text-4xl font-extrabold">Test</h1>
-<div class="row-auto">
-    <div class="columns-5xl">
+<div class="row">
+    <div class="col-lg-7">
         <div class="card">
-            <div class="font-bold text-2xl">Hub Chat</div>
+
+            <Microsoft.AspNetCore.Components.Authorization.AuthorizeView>
+                <Authorized>
+                    <div class="card-header">HubChat
+                        [@context.User.Claims.Where(f => f.Type == ClaimTypes.Name).Last().Value]
+                    </div>
+                   
+</Authorized>
+            </Microsoft.AspNetCore.Components.Authorization.AuthorizeView>
+          <div class="card-header">HubChat []</div>
             <div class="card-body">
-                <ul class="list-group ">
+                <ul class="list-group">
                     @foreach (var chat in Chats)
                     {
                         <li class="list-disc">

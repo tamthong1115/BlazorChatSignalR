@@ -73,4 +73,5 @@ app.MapRazorComponents<App>()
 // Add the ChatHub to the request pipeline.
 app.MapControllers();
 app.MapHub<ChatHub>("/chathub");
+app.MapAdditionalIdentityEnpoints();
 app.Run();
