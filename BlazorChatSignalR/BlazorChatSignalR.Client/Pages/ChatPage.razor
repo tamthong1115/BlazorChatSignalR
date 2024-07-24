@@ -1,5 +1,4 @@
 @page "/chat"
-@* This is used to dispose the component when it is no longer needed *@
 @using BlazorChatSignalR.Client.ChatServices
 @using ChatModels
 @using Microsoft.AspNetCore.SignalR.Client
@@ -7,85 +6,147 @@
 @inject NavigationManager NavigationManager
 @rendermode InteractiveAuto
 
-
-<PageTitle>HubChat</PageTitle>
-
-<h1 class="text-4xl font-extrabold">Test</h1>
-<div class="row-auto">
-    <div class="columns-5xl">
-        <div class="card">
-            <div class="font-bold text-2xl">Hub Chat</div>
-            <div class="card-body">
-                <ul class="list-group ">
-                    @foreach (var chat in Chats)
-                    {
-                        <li class="list-disc">
-                            @chat.TimeStamp.Date.ToString("dd/MMM/yy")
-                            <br/>
-                            <span class="font-bold">@chat.UserName:</span>
-                            <br/>
-                            @chat.Message
-                        </li>
-                    }
-                </ul>
-
-                <div class="mt-3">
-                    <EditForm Model="_chat" OnValidSubmit="SendChat">
-                        <DataAnnotationsValidator/>
-                        <div class="vstack gap-1">
-                            <InputText @bind-Value="_chat.UserName" class="form-control w-25" placeholder="Username"/>
-                            <InputText @bind-Value="_chat.Message" class="form-control w-25" placeholder="Message"/>
-                        </div>
-
-                        <button class="float-end btn btn-success mt-3" type="submit">Send message</button>
-                    </EditForm>
-                </div>
-            </div>
-
-            <div class="card-footer fw-bold">
-                @if (!IsConnected)
-                {
-                    <button class="btn btn-primary">Chat Disconnected</button>
-                }
-                else
-                {
+<PageTitle>BlazingChat</PageTitle>
+<div class="zalo-container">
+    <div class="chat-window">
+        <div class="chat-header">
+            <h2>BlazingChat</h2>
+            <button type="button" class="btn btn-warning float-end" @onclick="Logout">Logout</button>
+        </div>
+        <div class="chat-messages">
+            @foreach (var chat in ChatMessages)
+            {
+                <div class="message @GetMessageClass(chat)">
                     <div>
-                        Connected
+                        <strong>@chat.Sender</strong>
+                        <span class="text-muted" style="font-size: 0.8em;">@chat.Timestamp.ToString("HH:mm:ss")</span>
                     </div>
-                }
-            </div>
+                    <div>@chat.Message</div>
+                </div>
+            }
+        </div>
+        <div class="chat-input">
+            <input type="text" class="form-control" @bind="chat.Message" @onkeypress="HandleKeyPress" placeholder="Enter message here..." />
+            <button class="btn btn-primary mt-2" @onclick="SendChat">Send Message</button>
         </div>
     </div>
 </div>
 
 @code {
-    private Chat _chat = new();
-    private HubConnection? _hubConnection;
-    public List<Chat> Chats { get; set; } = new List<Chat>();
-
+    private Chat chat = new Chat { Sender = "User1", Receiver = "User2" };
+    private HubConnection? hubConnection;
+    public List<Chat> ChatMessages { get; set; } = new List<Chat>();
 
     protected override async Task OnInitializedAsync()
     {
-        _hubConnection = new HubConnectionBuilder().WithUrl(NavigationManager.ToAbsoluteUri("/chathub")).Build();
+        hubConnection = new HubConnectionBuilder()
+            .WithUrl(NavigationManager.ToAbsoluteUri("/chathub"))
+            .Build();
 
-        _hubConnection.On<Chat>("ReceiveMessage", (chat) =>
+        hubConnection.On<Chat>("ReceiveMessage", (chat) =>
         {
-            Chats.Add(chat);
-            InvokeAsync(() => StateHasChanged());
+            if (chat.Sender == this.chat.Receiver || chat.Receiver == this.chat.Receiver || chat.Sender == this.chat.Sender)
+            {
+                ChatMessages.Add(chat);
+                InvokeAsync(() => StateHasChanged());
+            }
         });
 
-        await _hubConnection.StartAsync();
+        await hubConnection.StartAsync();
         var httpClient = new HttpClient();
         var chatApiUrl = NavigationManager.ToAbsoluteUri("/api/Chat");
-        Chats = await httpClient.GetFromJsonAsync<List<Chat>>(chatApiUrl);
+        ChatMessages = await httpClient.GetFromJsonAsync<List<Chat>>(chatApiUrl);
     }
 
-    public bool IsConnected => _hubConnection.State == HubConnectionState.Connected;
+    public bool IsConnected => hubConnection?.State == HubConnectionState.Connected;
 
-    public void SendChat()
+    public async Task SendChat()
     {
-        _hubConnection!.SendAsync("SendMessage", _chat);
-        _chat.Message = null;
+        if (!string.IsNullOrWhiteSpace(chat.Message))
+        {
+            chat.Timestamp = DateTime.Now;
+            await hubConnection!.SendAsync("SendMessage", chat);
+            ChatMessages.Add(new Chat { Sender = chat.Sender, Receiver = chat.Receiver, Message = chat.Message, Timestamp = chat.Timestamp });
+            chat.Message = string.Empty;
+        }
     }
 
+    private async Task HandleKeyPress(KeyboardEventArgs e)
+    {
+        if (e.Key == "Enter" && !string.IsNullOrEmpty(chat.Message))
+        {
+            await SendChat();
+        }
+    }
+
+    private async Task Logout()
+    {
+await hubConnection!.StopAsync();
+        NavigationManager.NavigateTo("/");
+    }
+
+    private string GetMessageClass(Chat chat)
+    {
+        return chat.Sender == this.chat.Sender ? "sent" : "received";
+    }
 }
+
+<style>
+    .zalo-container {
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+        background-color: #f0f0f0;
+    }
+
+    .chat-window {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        background-color: white;
+        border: 1px solid #ccc;
+    }
+
+    .chat-header {
+        padding: 10px;
+        background-color: #007bff;
+        color: white;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .chat-messages {
+        flex: 1;
+        padding: 10px;
+        overflow-y: auto;
+    }
+
+    .message {
+        margin-bottom: 10px;
+        padding: 10px;
+        border-radius: 5px;
+    }
+
+    .sent {
+        background-color: #d1e7dd;
+        text-align: right;
+    }
+
+    .received {
+        background-color: #f8d7da;
+        text-align: left;
+    }
+
+    .chat-input {
+        padding: 10px;
+        border-top: 1px solid #ccc;
+        display: flex;
+        align-items: center;
+    }
+
+        .chat-input input {
+            flex: 1;
+            margin-right: 10px;
+        }
+</style>
