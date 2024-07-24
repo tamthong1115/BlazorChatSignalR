@@ -1,9 +1,14 @@
 ﻿@inherits LayoutComponentBase
+@using Microsoft.AspNetCore.Components.Authorization
 
 <div class="page">
-    <div class="sidebar">
-        <NavMenu/>
-    </div>
+    <AuthorizeView>
+        <Authorized>
+            <div class="sidebar">
+                <NavMenu/>
+            </div>
+        </Authorized>
+    </AuthorizeView>
 
     <main>
         <div class="top-row px-4">
@@ -11,9 +16,9 @@
         </div>
 
         <article class="content">
-           @Body
+            @Body
         </article>
-    </main>   
+    </main>
 </div>
 
 <div id="blazor-error-ui">
