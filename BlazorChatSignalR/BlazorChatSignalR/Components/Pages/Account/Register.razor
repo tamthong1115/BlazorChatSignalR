@@ -1,53 +1,52 @@
 ﻿@page "/Account/Register"
+<div class="container-form">
+	<h1 class="text-center my-4 mx-3">Welcome to <br />Blazing Chat</h1>
+	<div class="row justify-content-center">
+		<div class="mx-3">
+			<section class="form-container">
+				<EditForm Model="registerModel" method="post" OnValidSubmit="RegisterAsync" FormName="register">
+					<DataAnnotationsValidator />
+					<h2 class="text-center mb-4">Create a new account</h2>
+					<hr />
+					<ValidationSummary class="text-danger" role="alert" />
+					<div class="form-floating mb-3">
+						<label for="name" class="form-label">Full Name</label>
+						<InputText @bind-Value="registerModel.Fullname" class="form-control"
+								   autocomplete="current-name" aria-required="true" placeholder="Your Full Name" />
+						<ValidationMessage For="() => registerModel.Fullname" class="text-danger" />
+					</div>
 
-<h1 class="text-center my-4">Welcome to Blazing Chat</h1>
-<div class="row justify-content-center">
-	<div class="col-md-4">
-		 <section class="form-container">
-		<EditForm Model="registerModel" method="post" OnValidSubmit="RegisterAsync" FormName="register">
-			<DataAnnotationsValidator />
-				<h2 class="text-center mb-4">Create a new account</h2>
-			<hr/>
-			<ValidationSummary class="text-danger" role="alert" />
-			<div class="form-floating mb-3">
-					<label for="name" class="form-label">Full Name</label>
-				<InputText @bind-Value="registerModel.Fullname" class="form-control"
-						   autocomplete="current-name" aria-required="true" placeholder="Your Full Name" />
+					<div class="form-floating mb-3">
+						<label for="email" class="form-label">Email</label>
+						<InputText @bind-Value="registerModel.Email" class="form-control"
+								   autocomplete="current-email" aria-required="true" placeholder="Enter your Email" />
 
-				
-				<ValidationMessage For="() => registerModel.Fullname" class="text-danger" />
-			</div>
 
-			<div class="form-floating mb-3">
-					<label for="email" class="form-label">Email</label>
-				<InputText @bind-Value="registerModel.Email" class="form-control"
-						   autocomplete="current-email" aria-required="true" placeholder="Enter your Email" />
+						<ValidationMessage For="() => registerModel.Email" class="text-danger" />
+					</div>
 
-				
-				<ValidationMessage For="() => registerModel.Email" class="text-danger" />
-			</div>
+					<div class="form-floating mb-3">
+						<label for="password" class="form-label">Password</label>
+						<InputText type="password" @bind-Value="registerModel.Password" class="form-control"
+								   autocomplete="new-password" aria-required="true" placeholder="Enter your password" />
 
-			<div class="form-floating mb-3">
-					<label for="password" class="form-label">Password</label>
-				<InputText type="password" @bind-Value="registerModel.Password" class="form-control"
-						   autocomplete="new-password" aria-required="true" placeholder="Enter your password" />
-			
-				<ValidationMessage For="() => registerModel.Password" class="text-danger" />
-			</div>
+						<ValidationMessage For="() => registerModel.Password" class="text-danger" />
+					</div>
 
-			<div class="form-floating mb-3">
-					<label for="confirm-password" class="form-label">Confirm Password</label>
-				<InputText type="password" @bind-Value="registerModel.ConfirmPassword" class="form-control"
-						   autocomplete="new-password" aria-required="true" placeholder="Confirm your password" />
-				
-				<ValidationMessage For="() => registerModel.ConfirmPassword" class="text-danger" />
-			</div>
-			<button type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
-		</EditForm>
-		</section>
+					<div class="form-floating mb-3">
+						<label for="confirm-password" class="form-label">Confirm Password</label>
+						<InputText type="password" @bind-Value="registerModel.ConfirmPassword" class="form-control"
+								   autocomplete="new-password" aria-required="true" placeholder="Confirm your password" />
+
+						<ValidationMessage For="() => registerModel.ConfirmPassword" class="text-danger" />
+					</div>
+					<button type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
+				</EditForm>
+			</section>
+		</div>
 	</div>
-</div>
 
+</div>
 @code {
 	string Message = "";
 	[SupplyParameterFromForm]
