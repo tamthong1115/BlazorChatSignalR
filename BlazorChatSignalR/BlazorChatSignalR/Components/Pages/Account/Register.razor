@@ -1,85 +1,111 @@
 ﻿@page "/Account/Register"
-<div class="container-form">
-	<h1 class="text-center my-4 mx-3">Welcome to <br />Blazing Chat</h1>
-	<div class="row justify-content-center">
-		<div class="mx-3">
-			<section class="form-container">
-				<EditForm Model="registerModel" method="post" OnValidSubmit="RegisterAsync" FormName="register">
-					<DataAnnotationsValidator />
-					<h2 class="text-center mb-4">Create a new account</h2>
-					<hr />
-					<ValidationSummary class="text-danger" role="alert" />
-					<div class="form-floating mb-3">
-						<label for="name" class="form-label">Full Name</label>
-						<InputText @bind-Value="registerModel.Fullname" class="form-control"
-								   autocomplete="current-name" aria-required="true" placeholder="Your Full Name" />
-						<ValidationMessage For="() => registerModel.Fullname" class="text-danger" />
-					</div>
+@if (MessageError.Capacity != 0)
+{
+    <div class="list-error">
+        @foreach (string error in MessageError)
+        {
+            <div class="error-container">
+                <div class="error-message">
+                    <div class="title-error">Warning</div>
+                    <div class="content-error">@error</div>
+                </div>
+            </div>
+        }
+    </div>
+}
+<div class="container">
+    <div class="d-flex flex-column justify-content-center">
+        <div class="d-flex flex-column justify-content-center align-items-center">
+            <h1 class="text-center my-4 mx-3">Chào mừng bạn đến với Blazing Chat</h1>
+            <h2 class="text-center my-4 mx-3">Hãy tạo tài khoản ngay đi nào!</h2>
+        </div>
+    </div>
+    <div class="form">
+        <div class="mx-3">
+            <section class="form-container">
+                <h2 class="text-center mb-4">Tạo tài khoản mới</h2>
+                <hr />
+                <EditForm Model="registerModel" method="post" OnValidSubmit="RegisterAsync" FormName="register">
+                    <div class="d-flex flex-lg-wrap form">
+                        <DataAnnotationsValidator />
+                        @*                          <ValidationSummary class="text-danger" role="alert" />
+                        *@
+                        <div class="form-floating mb-3 mx-1">
+                            <label for="name" class="form-label">Tên của bạn là?</label>
+                            <InputText @bind-Value="registerModel.Fullname" class="form-control"
+                                       autocomplete="current-name" aria-required="true" placeholder="Họ tên đầy đủ" />
+                            <ValidationMessage For="() => registerModel.Fullname" class="text-danger" />
+                        </div>
 
-					<div class="form-floating mb-3">
-						<label for="email" class="form-label">Email</label>
-						<InputText @bind-Value="registerModel.Email" class="form-control"
-								   autocomplete="current-email" aria-required="true" placeholder="Enter your Email" />
+                        <div class="form-floating mb-3 mx-1">
+                            <label for="email" class="form-label">Email</label>
+                            <InputText @bind-Value="registerModel.Email" class="form-control"
+                                       autocomplete="current-email" aria-required="true" placeholder="Email của bạn" />
+                            <ValidationMessage For="() => registerModel.Email" class="text-danger" />
+                        </div>
 
+                        <div class="form-floating mb-3 mx-1">
+                            <label for="password" class="form-label">Mật khẩu là?</label>
+                            <InputText type="password" @bind-Value="registerModel.Password" class="form-control"
+                                       autocomplete="new-password" aria-required="true" placeholder="Mật khẩu của bạn" />
 
-						<ValidationMessage For="() => registerModel.Email" class="text-danger" />
-					</div>
+                            <ValidationMessage For="() => registerModel.Password" class="text-danger" />
+                        </div>
 
-					<div class="form-floating mb-3">
-						<label for="password" class="form-label">Password</label>
-						<InputText type="password" @bind-Value="registerModel.Password" class="form-control"
-								   autocomplete="new-password" aria-required="true" placeholder="Enter your password" />
+                        <div class="form-floating mb-3 mx-1">
+                            <label for="confirm-password" class="form-label">Nhắc lại mật khẩu</label>
+                            <InputText type="password" @bind-Value="registerModel.ConfirmPassword" class="form-control"
+                                       autocomplete="new-password" aria-required="true" placeholder="Mật khẩu của bạn" />
 
-						<ValidationMessage For="() => registerModel.Password" class="text-danger" />
-					</div>
-
-					<div class="form-floating mb-3">
-						<label for="confirm-password" class="form-label">Confirm Password</label>
-						<InputText type="password" @bind-Value="registerModel.ConfirmPassword" class="form-control"
-								   autocomplete="new-password" aria-required="true" placeholder="Confirm your password" />
-
-						<ValidationMessage For="() => registerModel.ConfirmPassword" class="text-danger" />
-					</div>
-					<button type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
-				</EditForm>
-			</section>
-		</div>
-	</div>
+                            <ValidationMessage For="() => registerModel.ConfirmPassword" class="text-danger" />
+                        </div>
+                    </div>
+                    <div class=" row d-flex justify-content-around flex-row">
+                        <button type="submit" class="w-45 btn btn-lg btn-primary">Register</button>
+                    </div>
+                </EditForm>
+            </section>
+        </div>
+    </div>
 
 </div>
 @code {
-	string Message = "";
-	[SupplyParameterFromForm]
-	RegisterModel registerModel { get; set; } = new();
+    List<string> MessageError = new List<string>();
+    [SupplyParameterFromForm]
+    RegisterModel registerModel { get; set; } = new();
 
-	async Task RegisterAsync()
-	{
-		var appUser = new AppUser()
-			{
-				Fullname = registerModel.Fullname,
-				Email = registerModel.Email,
-				PasswordHash = registerModel.Password,
-				UserName = registerModel.Fullname
-			};
-		var result = await userManager.CreateAsync(appUser, registerModel.Password);
-		if (!result.Succeeded)
-		{
-			Message = "Error occured whites crating the account";
-			return;
-		}
-		NavManager.NavigateTo("/");
-	}
+    async Task RegisterAsync()
+    {
+        var appUser = new AppUser()
+            {
+                Fullname = registerModel.Fullname,
+                Email = registerModel.Email,
+                PasswordHash = registerModel.Password,
+                UserName = registerModel.Fullname
+            };
+        var result = await userManager.CreateAsync(appUser, registerModel.Password);
+        if (!result.Succeeded)
+        {
+            MessageError.Add("Errors accurred while creating the account");
+            foreach (var error in result.Errors)
+            {
+                MessageError.Add($"{error.Code}: {error.Description}");
+            }
+            return;
+        }
+        NavManager.NavigateTo("/");
+    }
 
-	public class RegisterModel
-	{
-		[Required]
-		public string Fullname { get; set; } = string.Empty;
-		[Required, EmailAddress]
-		public string Email { get; set; } = string.Empty;
-		[Required]
-		public string Password { get; set; } = string.Empty;
-		[Compare(nameof(Password)), Required]
-		public string ConfirmPassword { get; set; } = string.Empty;
+    public class RegisterModel
+    {
+        [Required]
+        public string Fullname { get; set; } = string.Empty;
+        [Required, EmailAddress]
+        public string Email { get; set; } = string.Empty;
+        [Required]
+        public string Password { get; set; } = string.Empty;
+        [Compare(nameof(Password)), Required]
+        public string ConfirmPassword { get; set; } = string.Empty;
 
-	}
+    }
 }
