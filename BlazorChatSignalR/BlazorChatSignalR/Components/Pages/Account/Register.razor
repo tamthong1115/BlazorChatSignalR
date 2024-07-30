@@ -31,14 +31,14 @@
                         @*                          <ValidationSummary class="text-danger" role="alert" />
                         *@
                         <div class="form-floating mb-3 mx-1">
-                            <label for="name" class="form-label">Tên của bạn là?</label>
+                            <label for="name" class="form-label">Tên tài khoản của bạn?</label>
                             <InputText @bind-Value="registerModel.Fullname" class="form-control"
-                                       autocomplete="current-name" aria-required="true" placeholder="Họ tên đầy đủ" />
+                                       autocomplete="current-name" aria-required="true" placeholder="Tên tài khoản" />
                             <ValidationMessage For="() => registerModel.Fullname" class="text-danger" />
                         </div>
 
                         <div class="form-floating mb-3 mx-1">
-                            <label for="email" class="form-label">Email</label>
+                            <label for="email" class="form-label">Email là?</label>
                             <InputText @bind-Value="registerModel.Email" class="form-control"
                                        autocomplete="current-email" aria-required="true" placeholder="Email của bạn" />
                             <ValidationMessage For="() => registerModel.Email" class="text-danger" />
