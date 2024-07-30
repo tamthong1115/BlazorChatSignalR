@@ -1,48 +1,49 @@
-@using Microsoft.AspNetCore.Components.Authorization
-<div class="top-row ps-3 navbar navbar-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="">BlazorChatSignalR</a>
+﻿@using Microsoft.AspNetCore.Components.Authorization
+@using System.ComponentModel.DataAnnotations
+@using BlazorChatSignalR.Client.Models
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject IHttpContextAccessor HttpContentAccessor
+
+<div class="container-navbar">
+    <div class="info-group">
+        <div class="title">BlazorChatApp <br />SignalR</div>
+        <a class="account" href="#">
+            <img class="info-control thumbnail" src="sources/avatar.jpg" />
+            <div class="info-control account-name">@FullName</div>
+        </a>
+    </div>
+    <div class="navigation">
+        <div class="item">
+            <NavLink class="item-link" href="list-chat" Match="NavLinkMatch.All">
+                <span>
+                    <img class="icon" src="icon/list.svg" />
+                    List
+                </span>
+            </NavLink>
+        </div>
+        <div class="item">
+            <NavLink class="item-link" href="Weather">
+                <span>
+                    <img class="icon" src="/icon/collection.svg" />
+                    Groups
+                </span>
+            </NavLink>
+        </div>
+        <div class="item">
+            <NavLink class="item-link" href="">
+                <span>
+                    <img class="icon" src="/icon/box-arrow-left.svg" />
+                    Sign out
+                </span>
+            </NavLink>
+        </div>
     </div>
 </div>
 
-@* <input type="checkbox" title="Navigation menu" class="navbar-toggler"/> *@
-
-<div class="nav-scrollable" onclick="document.querySelector('.navbar-toggler').click()">
-    <nav class="flex-column">
-        <AuthorizeView>
-            <Authorized>
-                <div class="nav-item px-3">
-                    <NavLink class="nav-link" href="/home" Match="NavLinkMatch.All">
-                        <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Home
-                    </NavLink>
-                </div>
-                <div class="nav-item px-3">
-                    <NavLink class="nav-link" href="/chat" Match="NavLinkMatch.All">
-                        <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Chat
-                    </NavLink>
-                </div>
-                <div class="nav-item px-3">
-                    <form action="Account/Logout" method="post">
-                        <AntiforgeryToken />
-                        <button class="nav-link">
-                            <span class="bi bi-arrow-bar-left-nav-menu"></span> Logout
-                        </button>
-
-                    </form>
-                </div>
-            </Authorized>
-            <NotAuthorized>
-                <div class="nav-item px-3">
-                    <NavLink class="nav-link" href="/" Match="NavLinkMatch.All">
-                        <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Login
-                    </NavLink>
-                </div>
-                <div class="nav-item px-3">
-                    <NavLink class="nav-link" href="/Account/Register" Match="NavLinkMatch.All">
-                        <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Register
-                    </NavLink>
-                </div>
-            </NotAuthorized>
-        </AuthorizeView>
-    </nav>
-</div>
+@code {
+    string FullName = "Undefined";
+    protected override void OnInitialized()
+    {
+        FullName = HttpContentAccessor.HttpContext.User.Identity.Name;
+    }
+}

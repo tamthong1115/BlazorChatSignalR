@@ -19,6 +19,7 @@
     margin:10px;
 }
 .btn:hover{
+    color:white;
    background-color:#0264ceff;
 }
 .input-form{

@@ -1,18 +1,20 @@
 ﻿@page "/"
 @using System.ComponentModel.DataAnnotations
+@using Microsoft.AspNetCore.Components.Authorization
 <div id="container-form">
-    <div class="d-flex flex-column justify-content-center title">
+    <div class="d-flex flex-column justify-content-center title mx-lg-2">
         <h1 class="text-center">Chào mừng bạn đến với Blazing Chat</h1>
         <h2 class="text-center">Bắt đầu trò chuyện luôn đi nào!</h2>
     </div>
     <div class="row justify-content-center">
-        <div class="col-ms-4 mx-2">
+        <div class="col-ms-4 mx-lg-2">
             @(message != "" ? message : "")
             <section class="form-container">
-                <EditForm Model="loginModel" method="post" OnValidSubmit="LoginAsync" FormName="login">
+                <EditForm Context="formContext" Model="loginModel" method="post" OnValidSubmit="LoginAsync" FormName="login">
                     <div class="d-flex flex-column justify-content-center align-items-center">
                         <DataAnnotationsValidator />
                         <h2 class="text-center my-4">Đăng nhập tài khoản đi nào!</h2>
+
                         <hr />
 
                         <ValidationSummary class="text-danger" role="alert" />
@@ -29,6 +31,7 @@
                         </div>
                         <button type="submit" class="btn">Đăng nhập</button>
                     </div>
+
                     <hr />
 
                     <div class="d-flex justify-content-center align-items-center">
@@ -42,6 +45,8 @@
         </div>
     </div>
 </div>
+
+
 @code {
     string message = "";
 
@@ -71,7 +76,7 @@
             (findUser, loginModel.Password, false, false);
             NavManager.NavigateTo("/home", true);
         }
- 
+
     }
 
     void navigate()

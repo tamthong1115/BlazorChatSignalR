@@ -1,3 +1,4 @@
+
 using System.Security.Claims;
 using BlazorChatSignalR.Client.Models;
 using Microsoft.AspNetCore.Components;
@@ -64,7 +65,7 @@ public class PersistingServerAuthenticationStateProvide : ServerAuthenticationSt
             var email = principal.FindFirstValue(_identityOptions.ClaimsIdentity.EmailClaimType);
             var fullName = principal.Claims.Last(fn => fn.Type == ClaimTypes.Name).Value;
 
-            if(userId != null && email != null && fullName != null)
+            if (userId != null && email != null && fullName != null)
             {
                 _persistentComponentState.PersistAsJson(nameof(UserInfo), new UserInfo
                 {
