@@ -42,9 +42,7 @@ builder.Services.AddAuthentication(o =>
 
 
 builder.Services.AddCascadingAuthenticationState();
-
 builder.Services.AddScoped<AuthenticationStateProvider, PersistingServerAuthenticationStateProvide>();
-
 
 var app = builder.Build();
 

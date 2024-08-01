@@ -39,13 +39,14 @@ a.account {
 }
 
 .thumbnail {
-    width: 50px;
+    width: 60px;
     height: auto;
     transition: width 0.5s;
+    border-radius:50px;
 }
 
     .thumbnail:hover {
-        width: 70px;
+        width: 80px;
     }
 
 .account-name {
